@@ -4,7 +4,8 @@ function App() {
   let [a,b] = useState(['남자 코드 추천','강남 우동맛집','리액트 독학']);
   let [good,setgood] = useState([0,0,0]);
   let [modal, setmodal] = useState(false);
-  [1,2,3].map(function(){})
+  let [index_s, setIndex] = useState(0)
+  let [value, setValue] = useState('')
   return (
     <div className="App">
       <div className="black-nav">
@@ -38,6 +39,7 @@ function App() {
               else
               {
                 setmodal(true)
+                setIndex(i)
               }
             }}>
             {data}
@@ -54,20 +56,24 @@ function App() {
           )
         })
       }
+      <button onClick={()=>{setIndex(0)}}>0번</button>
+      <button onClick={()=>{setIndex(1)}}>1번</button>
+      <button onClick={()=>{setIndex(2)}}>2번</button>
       {
-        modal ? <Modal/> : setmodal
+        modal ? <Modal index={index_s} change={b} value={a}/> : setmodal
       }
     </div>
     
   );
 }
 
-function Modal(){
+function Modal(props){
   return(
     <div className="modal">
-        <h4>제목</h4>
+        <h4>{props.value[props.index]}</h4>
         <p>날짜</p>
         <p>상세내용</p>
+        <button onClick={()=>{props.change(['여자 코드 추천','강남 우동맛집','리액트 독학'])}}>글 수정</button>
     </div>
   )
 }
