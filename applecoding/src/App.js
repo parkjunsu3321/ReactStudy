@@ -52,6 +52,7 @@ function App() {
             <p>
               2월 17일 발행 
             </p>
+            <button onClick={()=>{b(a.filter(word => word !== a[i]));}}>삭제</button>
             </div>
           )
         })
@@ -59,6 +60,8 @@ function App() {
       <button onClick={()=>{setIndex(0)}}>0번</button>
       <button onClick={()=>{setIndex(1)}}>1번</button>
       <button onClick={()=>{setIndex(2)}}>2번</button>
+      <input onChange={(e)=>{setValue(e.target.value)}}/> 
+        <button onClick={()=>{let copy = [...a]; copy.unshift(value); b(copy)}}>글 작성</button>
       {
         modal ? <Modal index={index_s} change={b} value={a}/> : setmodal
       }
