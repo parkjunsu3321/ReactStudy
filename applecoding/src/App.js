@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import './App.css';
+
+//화살표 함수로 만들어라
+//호스팅(?) 문제 this...chainin 뜻하지 않은 에러 -> 
 function App() {
   let [a,b] = useState(['남자 코드 추천','강남 우동맛집','리액트 독학']);
   let [good,setgood] = useState([0,0,0]);
@@ -32,7 +35,7 @@ function App() {
           return(
             <div className='list'>
             <h4 onClick={()=>{
-              if(modal == true)
+              if(modal === true) // === 인터프리터 언어 -> js 컴파일러가 없음 -> 
               {
                 setmodal(false)
               }
@@ -63,7 +66,7 @@ function App() {
       <input onChange={(e)=>{setValue(e.target.value)}}/> 
         <button onClick={()=>{let copy = [...a]; copy.unshift(value); b(copy)}}>글 작성</button>
       {
-        modal ? <Modal index={index_s} change={b} value={a}/> : setmodal
+        modal ? <Modal index={index_s} change={b} value={a}/> : setmodal //핸들러 함수로 넣어서 보내야함 -> b
       }
     </div>
     
