@@ -5,7 +5,7 @@ const HeaderContainer = styled.header`
   height: 50px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   background-color: #282c34;
   color: white;
   padding: 10px 20px;
@@ -17,22 +17,6 @@ const Logo = styled.h2`
   font-weight: bold;
   color: #4B77D8;
   font-family: 'Poppins', sans-serif;
-`;
-
-const Nav = styled.nav`
-  display: flex;
-  gap: 15px;
-`;
-
-const NavLink = styled.a`
-  color: white;
-  text-decoration: none;
-  font-size: 16px;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: #61dafb;
-  }
 `;
 
 const Sign = styled.nav`
@@ -56,6 +40,7 @@ const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  margin: 300px;
 `;
 
 const SearchInput = styled.input`
