@@ -6,6 +6,8 @@ import Movie from './pages/Movie';
 import Shopping from './pages/Shopping';
 import Test from './pages/Test';
 import Main from './pages/Main';
+import SignUp from './pages/SignUp';
+import SignIn from './pages/SignIn';
 
 function App() {
   return (
@@ -18,18 +20,20 @@ function App() {
 function AppContent() {
   const location = useLocation();
 
-  const noHeaderPaths = ['/'];
+  const noHeaderPaths = ['/','/SignUp','/SignIn'];
 
   return (
     <div className="App">
       {!noHeaderPaths.includes(location.pathname) && <Header />}
       <Routes>
-        <Route path='/' element={<Main />} />
-        <Route path='/test' element={<Test />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/shopping" element={<Shopping />} />
-        <Route path="/movie" element={<Movie />} />
-        <Route path="/about" element={<About />} />
+        <Route path='/' element={<Main/>} />
+        <Route path='/SignIn' element={<SignIn/>} />
+        <Route path='/signup' element={<SignUp/>}/>
+        <Route path='/test' element={<Test/>} />
+        <Route path="/home" element={<Home/>} />
+        <Route path="/shopping" element={<Shopping/>} />
+        <Route path="/movie" element={<Movie/>} />
+        <Route path="/about" element={<About/>} />
       </Routes>
     </div>
   );

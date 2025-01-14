@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   position: relative;
@@ -88,12 +89,25 @@ const BackgroundOverlay = styled.div`
 `;
 
 const Main = () => {
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+
+  const handleStart = () => {
+    if (email) {
+      navigate("/SignUp", { state: { email } });
+    }
+  };
+
+  const handleLogin = () => {
+    navigate("/SignIn")
+  }
+
   return (
     <Container>
       <Header>
         <Logo>ARKFLIX</Logo>
         <div>
-          <LoginButton>로그인</LoginButton>
+          <LoginButton onClick={handleLogin}>로그인</LoginButton>
         </div>
       </Header>
       <MainContent>
@@ -107,8 +121,13 @@ const Main = () => {
           입력하세요.
         </Text>
         <EmailForm>
-          <EmailInput type="email" placeholder="이메일 주소" />
-          <SubmitButton>시작하기</SubmitButton>
+          <EmailInput
+            type="email"
+            placeholder="이메일 주소"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <SubmitButton onClick={handleStart}>시작하기</SubmitButton>
         </EmailForm>
       </MainContent>
       <BackgroundOverlay />
