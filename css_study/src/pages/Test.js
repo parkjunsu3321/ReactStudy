@@ -36,7 +36,7 @@ const ItemContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  column-gap: 12%;
+  column-gap: 5%;
   width: 100%;
   max-width: 1300px;
   margin: 20px;
@@ -49,11 +49,14 @@ const ItemBox = styled.div`
   display: flex;
   justify-content: center;
   text-align: center;
+  background-color: lightgray;
+  align-items: center;
   margin-top: 0;
+  border-radius: 15px;
 `;
 
 const ItemImgWrapper = styled.div`
-  width: 100%;
+  width: 90%;
   height: 75%;
   margin-top: 10%;
   overflow: hidden;
@@ -80,7 +83,7 @@ const Price = styled.b`
 
 const ItemDetailsWrapper = styled.div`
   display: flex;
-  width: 100%;
+  width: 90%;
   height: 25%;
   justify-content: flex-start;
   flex-direction: column;
@@ -90,7 +93,6 @@ const ItemDetailsWrapper = styled.div`
 const Test = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  
   const splitArray = (arr, size) => {
     const result = [];
     for (let i = 0; i < arr.length; i += size) {
@@ -98,7 +100,6 @@ const Test = () => {
     }
     return result;
   }
-  
   useEffect(() => {
     axios
       .get("http://127.0.0.1:8000/items")
@@ -133,7 +134,7 @@ const Test = () => {
                   <ItemImg imageUrl={"http://127.0.0.1:8000" + data.image_url} />
                 </ItemImgWrapper>
                 <ItemDetailsWrapper>
-                  <div>{data.name && data.name.length > 17 ? `${data.name.slice(0, 17)}...` : data.name}</div>
+                  <div>{data.name && data.name.length > 16 ? `${data.name.slice(0, 16)}...` : data.name}</div>
                   <Price>{data.price.toLocaleString()}원</Price>
                 </ItemDetailsWrapper>
               </ItemBox>

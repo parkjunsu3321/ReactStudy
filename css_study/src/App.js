@@ -1,25 +1,37 @@
 import Header from './component/Header';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import Movie from './pages/Movie';
-import Shopping from './pages/Shopping'
+import Shopping from './pages/Shopping';
 import Test from './pages/Test';
+import Main from './pages/Main';
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Header/>
-        <Routes>
-          <Route path='/test' element={<Test/>}/>
-          <Route path="/" element={<Home />} />
-          <Route path="/shopping" element={<Shopping/>}/>
-          <Route path="/movie" element={<Movie />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
-      </div>
+      <AppContent />
     </Router>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
+
+  const noHeaderPaths = ['/'];
+
+  return (
+    <div className="App">
+      {!noHeaderPaths.includes(location.pathname) && <Header />}
+      <Routes>
+        <Route path='/' element={<Main />} />
+        <Route path='/test' element={<Test />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/shopping" element={<Shopping />} />
+        <Route path="/movie" element={<Movie />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </div>
   );
 }
 

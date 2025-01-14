@@ -26,6 +26,7 @@ const ItemBox = styled.div`
   justify-content: space-around;
   background-color: black;
   background-image: url(${(props) => props.imageUrl});
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   
