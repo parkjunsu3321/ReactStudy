@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
@@ -36,7 +37,7 @@ const LoginButton = styled.button`
   cursor: pointer;
 `;
 
-const MainContent = styled.div`
+const MainContent = styled(motion.div)`
   text-align: center;
   z-index: 2;
   padding: 12% 20px;
@@ -90,17 +91,25 @@ const BackgroundOverlay = styled.div`
 
 const Main = () => {
   const [email, setEmail] = useState("");
+  const [isMoved, setIsMoved] = useState(false);
   const navigate = useNavigate();
 
   const handleStart = () => {
-    if (email) {
-      navigate("/SignUp", { state: { email } });
+    if (!email) {
+      alert("이메일을 입력해주세요.");
+    } else if (!email.includes('@') || !email.includes('.')) {
+      alert("올바른 이메일 형식이 아닙니다.");
+    } else {
+      setIsMoved(true);
+      setTimeout(() => {
+        navigate("/SignUp", { state: { email } });
+      }, 1000);
     }
   };
 
   const handleLogin = () => {
-    navigate("/SignIn")
-  }
+    navigate("/SignIn");
+  };
 
   return (
     <Container>
@@ -110,7 +119,11 @@ const Main = () => {
           <LoginButton onClick={handleLogin}>로그인</LoginButton>
         </div>
       </Header>
-      <MainContent>
+      <MainContent
+        initial={{ y: 0, opacity: 1 }}
+        animate={{ y: isMoved ? 100 : 0, opacity: isMoved ? 0 : 1 }}
+        transition={{ duration: 1 }}
+      >
         <Title>
           영화, 시리즈 등의 정보를
           <br />
