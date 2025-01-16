@@ -45,15 +45,17 @@ const LoginButton = styled.button`
   color: #fff;
   font-weight: bold;
   cursor: pointer;
+  border-radius: 5px;
 `;
 
 const MainContent = styled.div`
   display: flex;
+  height: 100vh;
   justify-content: center;
   align-items: center;
   text-align: center;
   z-index: 2;
-  padding: 12% 20px;
+  padding: 10% 20px;
   height: 100%;
 `;
 
@@ -68,8 +70,8 @@ const EmailForm = styled.div`
 `;
 
 const EmailInput = styled.input.attrs((props)=>({
-  defaultValue: props.data,
-  readOnly: true,
+  placeHolder: props.data,
+  readOnly: props.boolean,
 }))`
   padding: 10px;
   font-size: 1rem;
@@ -77,17 +79,6 @@ const EmailInput = styled.input.attrs((props)=>({
   border: 1px solid black;
   border-radius: 5px;
   color: gray;
-`;
-
-
-const SubmitButton = styled.button`
-  padding: 10px 20px;
-  font-size: 1rem;
-  background-color: #e50914;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  border-radius: 5px;
 `;
 
 const SignForm = styled.div`
@@ -98,21 +89,14 @@ const SignForm = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 15px;
-  gap: 20px;
+  gap: 5%;
   animation: ${slideDown} 1s ease-out;
 `;
 
 const Title = styled.h1`
   font-size: 1.5rem;
   line-height: 1.4;
-  margin-bottom: 20px;
   color: black;
-`;
-
-const Text = styled.p`
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-  align-items: center;
 `;
 
 const BackgroundOverlay = styled.div`
@@ -142,11 +126,13 @@ const SignUp = () => {
     const handleLogin = () => {
         navigate("/SignIn")
     }
-
+    const handlHome = () => {
+      navigate("/");
+    };
     return (
       <Container>
         <Header>
-            <Logo>ARKFLIX</Logo>
+            <Logo onClick={handlHome}>ARKFLIX</Logo>
             <div>
                 <LoginButton onClick={handleLogin}>로그인</LoginButton>
             </div>
@@ -157,11 +143,16 @@ const SignUp = () => {
                     회원가입
                 </Title>
                 <EmailForm>
-                  <EmailInput data={email}/>
+                  <EmailInput data={"닉네임"} boolean={false}/>
                   <CheckBTN>
                     중복확인
                   </CheckBTN>
                 </EmailForm>
+                <EmailInput type="text" style={{ width: "80%", color: "black" }} data={email} boolean={true}/>
+                <EmailInput type="password" style={{ width: "80%", color: "black" }} data={"비밀번호"} boolean={false}/>
+                <EmailInput type="password" style={{ width: "80%", color: "black" }} data={"비밀번호 확인"} boolean={false}/>
+                <EmailInput type="password" style={{ width: "80%", color: "black" }} data={"비밀번호 확인"} boolean={false}/>
+                <CheckBTN style={{width:"85%"}}>가입하기</CheckBTN>
             </SignForm>
         </MainContent>
         <BackgroundOverlay />

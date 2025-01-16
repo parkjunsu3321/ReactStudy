@@ -35,13 +35,13 @@ const LoginButton = styled.button`
   color: #fff;
   font-weight: bold;
   cursor: pointer;
+  border-radius: 5px;
 `;
 
 const MainContent = styled(motion.div)`
   text-align: center;
   z-index: 2;
   padding: 12% 20px;
-  border: 1px solid black;
 `;
 
 const Title = styled.h1`
@@ -67,6 +67,7 @@ const EmailInput = styled.input`
   width: 450px;
   border: none;
   border-radius: 5px;
+  outline: none;
 `;
 
 const SubmitButton = styled.button`
@@ -111,10 +112,15 @@ const Main = () => {
     navigate("/SignIn");
   };
 
+  const handlHome = () => {
+    navigate("/");
+  };
+  
+
   return (
     <Container>
       <Header>
-        <Logo>ARKFLIX</Logo>
+        <Logo onClick={handlHome}>ARKFLIX</Logo>
         <div>
           <LoginButton onClick={handleLogin}>로그인</LoginButton>
         </div>
