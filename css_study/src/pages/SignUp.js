@@ -95,7 +95,8 @@ const SignForm = styled.div`
 
 const Title = styled.h1`
   font-size: 1.5rem;
-  line-height: 1.4;
+  line-height: 1.2;
+  margin-bottom: 1%;
   color: black;
 `;
 
