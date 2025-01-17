@@ -12,4 +12,3 @@ async def join(payload:UserDTO,db=Depends(provide_session)):
     payload.password = hash_password(payload.password)
     user = await crud.create_user(payload=payload)
     return user
-

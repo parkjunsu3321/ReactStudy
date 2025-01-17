@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {styled, keyframes} from "styled-components";
+import axios from 'axios';
 
 const slideDown = keyframes`
   0% {
@@ -123,6 +124,20 @@ const CheckBTN = styled.button`
 const SignUp = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const handleJoin = () => {
+      axios.post('https://localhost:8000/User/join', {
+        data:{}
+      })
+        .then(response => {
+          console.log('Response:', response.data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+    const handleCheck = () => {
+
+    }
     const { email } = location.state || {};
     return (
       <Container>
@@ -133,7 +148,7 @@ const SignUp = () => {
                 </Title>
                 <EmailForm>
                   <EmailInput data={"닉네임"} boolean={false}/>
-                  <CheckBTN>
+                  <CheckBTN onClick={handleCheck}>
                     중복확인
                   </CheckBTN>
                 </EmailForm>
@@ -141,7 +156,7 @@ const SignUp = () => {
                 <EmailInput type="password" style={{ width: "80%", color: "black" }} data={"비밀번호"} boolean={false}/>
                 <EmailInput type="password" style={{ width: "80%", color: "black" }} data={"비밀번호 확인"} boolean={false}/>
                 <EmailInput type="password" style={{ width: "80%", color: "black" }} data={"비밀번호 확인"} boolean={false}/>
-                <CheckBTN style={{width:"85%"}}>가입하기</CheckBTN>
+                <CheckBTN style={{width:"85%"}} onClick={handleJoin}>가입하기</CheckBTN>
             </SignForm>
         </MainContent>
         <BackgroundOverlay />
