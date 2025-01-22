@@ -7,3 +7,7 @@ class UserDTO(BaseModel):
     nick_name: str
     password: str
     birthdate: date
+
+class LoginDTO(BaseModel):
+    email:str
+    password:str

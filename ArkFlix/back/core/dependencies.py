@@ -1,3 +1,7 @@
+import smtplib
+import time
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
@@ -7,9 +11,14 @@ from .config import get_config
 config = get_config()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+SENDER_EMAIL = "arkob3321@gmail.com"
+SENDER_PASSWORD = "acce tmam ylgt huwh" 
 SECRET_KEY = config.jwt_secret_key
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = config.jwt_expire_minutes
+TOKEN_TYPE = "ARK3321"
 
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
@@ -33,3 +42,53 @@ def verify_token(token: str) -> dict:
         return payload
     except JWTError:
         raise JWTError("Invalid token or expired token.")
+    
+def create_email_verification_token(email):
+    expiration = datetime.utcnow() + timedelta(hours=1)
+    token_data = {"email": email, "exp": expiration}
+    token = jwt.encode(token_data, SECRET_KEY, algorithm=ALGORITHM)
+    return token
+
+def send_verification_email(user_email):
+    token = create_email_verification_token(user_email)
+    verification_link = f"http://localhost:8000/verify-email?token={token}"
+    
+    subject = "Email Verification"
+    body = f"Please click the following link to verify your email: {verification_link}"
+    
+    send_email(user_email, subject, body)
+
+def send_email(to_email, subject, body):
+    msg = MIMEMultipart()
+    msg['From'] = SENDER_EMAIL
+    msg['To'] = to_email
+    msg['Subject'] = subject
+    
+    msg.attach(MIMEText(body, 'plain'))
+    
+    try:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SENDER_EMAIL, SENDER_PASSWORD)
+            text = msg.as_string()
+            server.sendmail(SENDER_EMAIL, to_email, text)
+        print(f"Email sent to {to_email}")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+
+def verify_email(token):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email = payload["email"]
+        print(f"Email {email} verified successfully!")
+        return f"Email {email} verified successfully!"
+    except JWTError:
+        return "Invalid token!"
+    
+def get_email_by_token(token):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email = payload["email"]
+        return email
+    except JWTError:
+        return "Invalid token!"
