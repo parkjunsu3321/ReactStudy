@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {styled, keyframes} from "styled-components";
 import axios from 'axios';
@@ -124,19 +124,49 @@ const CheckBTN = styled.button`
 const SignUp = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const handleJoin = () => {
-      axios.post('https://localhost:8000/User/join', {
-        data:{}
-      })
-        .then(response => {
-          console.log('Response:', response.data);
+    const [nick, setNick] = useState("");
+    const [password, setPassword] = useState("");
+    const [checkpasss, setCheckpass] = useState("");
+    const [birth, setBirth] = useState("");
+    const [check, setCheck] = useState("");
+    const handleJoin = async() => {
+      if(password === checkpasss)
+      {
+        console.log(nick)
+        await axios.post('http://127.0.0.1:8000/User/join', {
+          user_email: email,
+          nick_name: nick,
+          password: password,
+          birthdate: birth,
         })
-        .catch(error => {
-          console.error('Error:', error);
-        });
+          .then(response => {
+            console.log('Response:', response.data);
+            navigate("/SignIn")
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      }
+      else
+      {
+        alert("비밀번호가 일치하지 않습니다.")
+      }
     }
-    const handleCheck = () => {
 
+    const handleCheck = async() => {
+      const response = await axios.get('http://127.0.0.1:8000/User/nickCheck', {
+        params:{"nick":nick}
+      })
+      setCheck(!response.data)
+      console.log(nick)
+      if(response.data != true)
+      {
+        alert("사용가능한 아이디 입니다.")
+      }
+      else
+      {
+        alert("이미 존재하는 아이디입니다.")
+      }
     }
     const { email } = location.state || {};
     return (
@@ -147,15 +177,15 @@ const SignUp = () => {
                     회원가입
                 </Title>
                 <EmailForm>
-                  <EmailInput data={"닉네임"} boolean={false}/>
+                  <EmailInput value={nick} onChange={(e) => setNick(e.target.value)} data={"닉네임"} boolean={false}/>
                   <CheckBTN onClick={handleCheck}>
                     중복확인
                   </CheckBTN>
                 </EmailForm>
-                <EmailInput type="text" style={{ width: "80%", color: "black" }} data={email} boolean={true}/>
-                <EmailInput type="password" style={{ width: "80%", color: "black" }} data={"비밀번호"} boolean={false}/>
-                <EmailInput type="password" style={{ width: "80%", color: "black" }} data={"비밀번호 확인"} boolean={false}/>
-                <EmailInput type="password" style={{ width: "80%", color: "black" }} data={"비밀번호 확인"} boolean={false}/>
+                <EmailInput type="text" style={{width: "80%", color: "black" }} data={email} boolean={true}/>
+                <EmailInput onChange={(e) => setPassword(e.target.value)} type="password" style={{ width: "80%", color: "black" }} data={"비밀번호"} boolean={false}/>
+                <EmailInput onChange={(e) => setCheckpass(e.target.value)} type="password" style={{ width: "80%", color: "black" }} data={"비밀번호 확인"} boolean={false}/>
+                <EmailInput onChange={(e) => setBirth(e.target.value)} type="date" style={{ width: "80%", color: "black" }} data={"생년월일"} boolean={false}/>
                 <CheckBTN style={{width:"85%"}} onClick={handleJoin}>가입하기</CheckBTN>
             </SignForm>
         </MainContent>

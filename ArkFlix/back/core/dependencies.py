@@ -51,7 +51,7 @@ def create_email_verification_token(email):
 
 def send_verification_email(user_email):
     token = create_email_verification_token(user_email)
-    verification_link = f"http://localhost:8000/verify-email?token={token}"
+    verification_link = f"http://localhost:8000/User/verify-email?token={token}"
     
     subject = "Email Verification"
     body = f"Please click the following link to verify your email: {verification_link}"

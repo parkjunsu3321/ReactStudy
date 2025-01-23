@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Container = styled.div`
   position: relative;
@@ -95,16 +96,33 @@ const Main = () => {
   const [isMoved, setIsMoved] = useState(false);
   const navigate = useNavigate();
 
-  const handleStart = () => {
+  const handleStart = async () => {
     if (!email) {
       alert("이메일을 입력해주세요.");
-    } else if (!email.includes('@') || !email.includes('.')) {
+    } 
+    else if (!email.includes('@') || !email.includes('.')) {
       alert("올바른 이메일 형식이 아닙니다.");
-    } else {
-      setIsMoved(true);
-      setTimeout(() => {
-        navigate("/SignUp", { state: { email } });
-      }, 1000);
+    } 
+    else {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/User/emailCheck", {
+          params: { email: email }
+        });
+  
+        const isEmailRegistered = response.data;
+  
+        if (isEmailRegistered) {
+          navigate("/SignIn", { state: { email } });
+        } else {
+          setIsMoved(true);
+          setTimeout(() => {
+            navigate("/SignUp", { state: { email } });
+          }, 1000);
+        }
+      } catch (error) {
+        console.error("Error checking email:", error);
+        alert("이메일 확인 중 오류가 발생했습니다. 다시 시도해주세요.");
+      }
     }
   };
   

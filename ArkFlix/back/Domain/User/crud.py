@@ -20,6 +20,8 @@ class UserCRUD:
     async def Login(self,*,email,password):
         result = await self._session.execute(select(UserModel).where(UserModel.user_email == email))
         user = result.scalars().first()
+        print(user.authenticator)
+        print(verify_password(password, user.password))
         if verify_password(password, user.password) and user.authenticator:
             return create_access_token(data={"user_id": user.id})
         else:
@@ -39,5 +41,5 @@ class UserCRUD:
         result = await self._session.execute(select(UserModel).where(UserModel.user_email == email))
         user = result.scalars().first()
         user.authenticator = True
-        self._session.commit()
+        await self._session.commit()
         return user
