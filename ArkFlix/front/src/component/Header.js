@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -14,6 +15,7 @@ const Logo = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
   color: #e50914;
+  cursor: pointer;
 `;
 
 const LoginButton = styled.button`
@@ -27,23 +29,38 @@ const LoginButton = styled.button`
 `;
 
 const Header = () => {
-    const navigate = useNavigate();
-    const handleLogin = () => {
-      navigate("/SignIn");
-    };
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const handlHome = () => {
-        navigate("/");
-    };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
 
-    return(
+  const handleLogin = () => {
+    navigate("/SignIn");
+  };
+
+  const handleHome = () => {
+    navigate("/");
+  };
+
+  const handleInfo = () => {
+    navigate("/MyInfo");
+  };
+
+  return (
     <HeaderContainer>
-        <Logo onClick={handlHome}>ARKFLIX</Logo>
-        <div>
-            <LoginButton onClick={handleLogin}>로그인</LoginButton>
-        </div>
+      <Logo onClick={handleHome}>ARKFLIX</Logo>
+      <div>
+        {isLoggedIn ? (
+          <LoginButton onClick={handleInfo}>내 정보</LoginButton>
+        ) : (
+          <LoginButton onClick={handleLogin}>로그인</LoginButton>
+        )}
+      </div>
     </HeaderContainer>
-    );
-}
+  );
+};
 
 export default Header;

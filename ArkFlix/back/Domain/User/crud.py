@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from fastapi import HTTPException, status
 from .schema import (UserDTO,LoginDTO)
 from core.models import UserModel
 from core.dependencies import create_access_token, verify_password
@@ -17,15 +18,16 @@ class UserCRUD:
         await self._session.commit()
         return new_user
     
-    async def Login(self,*,email,password):
-        result = await self._session.execute(select(UserModel).where(UserModel.user_email == email))
-        user = result.scalars().first()
-        print(user.authenticator)
-        print(verify_password(password, user.password))
-        if verify_password(password, user.password) and user.authenticator:
-            return create_access_token(data={"user_id": user.id})
-        else:
-            return 0
+    async def Login(self, *, email, password):
+        user = (await self._session.execute(
+            select(UserModel).where(UserModel.user_email == email)
+        )).scalars().first()
+        if not user or not verify_password(password, user.password) or not user.authenticator:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid credentials"
+            )
+        return create_access_token(data={"user_id": user.id})
         
     async def get_user_by_email(self,*,email:str):
         result = await self._session.execute(select(UserModel).where(UserModel.user_email == email))

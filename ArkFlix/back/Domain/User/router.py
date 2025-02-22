@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import HTMLResponse
 from core.database import provide_session
+from fastapi import HTTPException, status
 from .schema import (UserDTO,LoginDTO)
 from core.dependencies import hash_password
 from .crud import UserCRUD
@@ -20,12 +21,12 @@ async def Join(payload:UserDTO,db=Depends(provide_session)):
 @router.get("/login")
 async def Login(email:str,password:str,db=Depends(provide_session)):
     crud = UserCRUD(session=db)
+    print(email)
+    print(password)
     token = await crud.Login(email=email, password=password)
     print(token)
     if token:
         return {TOKEN_TYPE+" "+token}
-    else:
-        return {"error": "Invalid credentials or authentication failed"}
 
 @router.get("/emailCheck")
 async def EmailCheck(email:str,db=Depends(provide_session)):

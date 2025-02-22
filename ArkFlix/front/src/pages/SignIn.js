@@ -130,10 +130,38 @@ const SignIn = () => {
     console.log(`${provider} 소셜 로그인`);
   };
 
-  const handleLogin = async() => {
-    const response = await axios.get("http://127.0.0.1:8000/User/login", {params:{"email":id,"password":password}});
-    console.log(response.data)
-  }
+  const handleLogin = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/User/login", {
+        params: {
+          email: id,
+          password: password
+        }
+      });
+      console.log(response.status);
+      if (response.status === 200) {
+        localStorage.setItem("token_arkflix", response.data);
+        alert("로그인 성공!");
+        navigate("/Home");
+      }
+    } 
+    catch (error) {
+      if (error.response) {
+        if (error.response.status === 401) {
+          alert("회원정보가 일치하지 않습니다.");
+        }
+        else {
+          alert("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+          console.error("서버 오류:", error.response);
+        }
+      }
+      else {
+        alert("네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.");
+        console.error("네트워크 오류:", error);
+      }
+    }
+  };
+  
 
   return (
     <Container>
